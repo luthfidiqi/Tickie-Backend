@@ -1,10 +1,10 @@
 const connection = require("../../config/mysql");
 
 module.exports = {
-  getCountMovie: () =>
+  getCountSchedule: () =>
     new Promise((resolve, reject) => {
       connection.query(
-        "SELECT COUNT(*) AS total FROM movie",
+        "SELECT COUNT(*) AS total FROM schedule",
         (error, result) => {
           if (!error) {
             resolve(result[0].total);
@@ -14,10 +14,10 @@ module.exports = {
         }
       );
     }),
-  getAllMovie: (limit, offset) =>
+  getAllSchedule: (limit, offset) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        `SELECT * FROM movie WHERE name LIKE "%Batman%" ORDER BY id DESC LIMIT ? OFFSET ?`,
+      connection.query(
+        "SELECT * FROM schedule LIMIT ? OFFSET ?",
         [limit, offset],
         (error, result) => {
           if (!error) {
@@ -27,12 +27,11 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
     }),
-  getMovieById: (id) =>
+  getScheduleById: (id) =>
     new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM movie WHERE id = ?",
+        "SELECT * FROM schedule WHERE id = ?",
         id,
         (error, result) => {
           if (!error) {
@@ -43,10 +42,10 @@ module.exports = {
         }
       );
     }),
-  createMovie: (data) =>
+  createSchedule: (data) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        "INSERT INTO movie SET ?",
+        "INSERT INTO schedule SET ?",
         data,
         (error, result) => {
           if (!error) {
@@ -62,10 +61,10 @@ module.exports = {
       );
       console.log(query.sql);
     }),
-  updateMovie: (id, data) =>
+  updateSchedule: (id, data) =>
     new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE movie SET ? WHERE id = ?",
+        "UPDATE schedule SET ? WHERE id = ?",
         [data, id],
         (error) => {
           if (!error) {
@@ -80,9 +79,9 @@ module.exports = {
         }
       );
     }),
-  deleteMovie: (id, data) =>
+  deleteSchedule: (id, data) =>
     new Promise((resolve, reject) => {
-      connection.query("DELETE FROM movie WHERE id = ?", id, (error) => {
+      connection.query("DELETE FROM schedule WHERE id = ?", id, (error) => {
         if (!error) {
           const newResult = {
             id,
