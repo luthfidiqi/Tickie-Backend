@@ -14,10 +14,17 @@ module.exports = {
         }
       );
     }),
-  getAllSchedule: (limit, offset) =>
+  getAllSchedule: (searchLocation, sort, limit, offset) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM schedule LIMIT ? OFFSET ?",
+      const query = connection.query(
+        `SELECT * 
+        FROM schedule 
+        INNER JOIN movie
+        ON schedule.movieId = movie.id
+        WHERE schedule.location 
+        LIKE "%${searchLocation}%" 
+        ORDER BY schedule.${sort} 
+        LIMIT ? OFFSET ?`,
         [limit, offset],
         (error, result) => {
           if (!error) {
@@ -27,6 +34,7 @@ module.exports = {
           }
         }
       );
+      console.log(query.sql);
     }),
   getScheduleById: (id) =>
     new Promise((resolve, reject) => {

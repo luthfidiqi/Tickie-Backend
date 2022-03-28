@@ -14,10 +14,10 @@ module.exports = {
         }
       );
     }),
-  getAllMovie: (limit, offset) =>
+  getAllMovie: (searchName, searchRelease, sort, limit, offset) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        `SELECT * FROM movie WHERE name LIKE "%Batman%" ORDER BY id DESC LIMIT ? OFFSET ?`,
+        `SELECT * FROM movie WHERE name LIKE "%${searchName}%" AND releaseDate = "${searchRelease}" ORDER BY ${sort} LIMIT ? OFFSET ?`,
         [limit, offset],
         (error, result) => {
           if (!error) {

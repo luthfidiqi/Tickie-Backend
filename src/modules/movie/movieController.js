@@ -18,7 +18,28 @@ module.exports = {
   },
   getAllMovie: async (request, response) => {
     try {
-      let { searchName, sort, page, limit } = request.query;
+      let { searchName, searchRelease, sort, page, limit } = request.query;
+
+      if (!page) {
+        page = 1;
+      }
+
+      if (!limit) {
+        limit = 10;
+      }
+
+      if (!searchName) {
+        searchName = "";
+      }
+
+      if (!searchRelease) {
+        searchRelease = "";
+      }
+
+      if (!sort) {
+        page = "id ASC";
+      }
+
       // searchName = String(searchName);
       // sort = String(sort);
       page = Number(page); // 2
@@ -33,7 +54,13 @@ module.exports = {
         totalData,
       };
 
-      const result = await movieModel.getAllMovie(limit, offset);
+      const result = await movieModel.getAllMovie(
+        searchName,
+        searchRelease,
+        sort,
+        limit,
+        offset
+      );
 
       return helperWrapper.response(
         response,

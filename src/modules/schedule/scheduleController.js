@@ -18,7 +18,24 @@ module.exports = {
   },
   getAllSchedule: async (request, response) => {
     try {
-      let { page, limit } = request.query;
+      let { searchLocation, sort, page, limit } = request.query;
+
+      if (!page) {
+        page = 1;
+      }
+
+      if (!limit) {
+        limit = 10;
+      }
+
+      if (!searchLocation) {
+        searchLocation = "";
+      }
+
+      if (!sort) {
+        page = "id ASC";
+      }
+
       page = Number(page); // 2
       limit = Number(limit); // 3
       const offset = page * limit - limit; // 2 * 3 - 3 = 3
@@ -31,7 +48,12 @@ module.exports = {
         totalData,
       };
 
-      const result = await scheduleModel.getAllSchedule(limit, offset);
+      const result = await scheduleModel.getAllSchedule(
+        searchLocation,
+        sort,
+        limit,
+        offset
+      );
 
       return helperWrapper.response(
         response,
