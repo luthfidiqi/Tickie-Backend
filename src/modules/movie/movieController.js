@@ -18,7 +18,7 @@ module.exports = {
   },
   getAllMovie: async (request, response) => {
     try {
-      let { searchName, searchRelease, sort, page, limit } = request.query;
+      let { searchName, sort, page, limit } = request.query;
 
       if (!page) {
         page = 1;
@@ -30,10 +30,6 @@ module.exports = {
 
       if (!searchName) {
         searchName = "";
-      }
-
-      if (!searchRelease) {
-        searchRelease = "";
       }
 
       if (!sort) {
@@ -56,7 +52,6 @@ module.exports = {
 
       const result = await movieModel.getAllMovie(
         searchName,
-        searchRelease,
         sort,
         limit,
         offset

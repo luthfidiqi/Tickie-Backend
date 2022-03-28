@@ -2,20 +2,6 @@ const helperWrapper = require("../../helpers/wrapper");
 const scheduleModel = require("./scheduleModel");
 
 module.exports = {
-  getHello: async (request, response) => {
-    try {
-      //   response.status(200);
-      //   response.send("Hello World");
-      return helperWrapper.response(
-        response,
-        200,
-        "Success get data !",
-        "Hello World"
-      );
-    } catch (error) {
-      return helperWrapper.response(response, 400, "Bad Request", null);
-    }
-  },
   getAllSchedule: async (request, response) => {
     try {
       let { searchLocation, sort, page, limit } = request.query;
