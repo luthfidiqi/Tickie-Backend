@@ -19,7 +19,7 @@ module.exports = {
       }
 
       if (!sort) {
-        page = "id ASC";
+        sort = "id ASC";
       }
 
       page = Number(page); // 2

@@ -5,6 +5,7 @@ module.exports = {
   createBooking: async (request, response) => {
     try {
       const {
+        userId,
         scheduleId,
         dateBooking,
         timeBooking,
@@ -18,6 +19,7 @@ module.exports = {
       const statusUsed = "active";
 
       const setData = {
+        userId,
         scheduleId,
         dateBooking,
         timeBooking,
@@ -43,6 +45,54 @@ module.exports = {
         result,
         seat,
       });
+    } catch (error) {
+      return helperWrapper.response(response, 400, "Bad Request", null);
+    }
+  },
+  getBookingByUserId: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const result = await bookingModel.getBookingByUserId(id);
+
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(
+        response,
+        200,
+        "Success get data !",
+        result
+      );
+    } catch (error) {
+      return helperWrapper.response(response, 400, "Bad Request", null);
+    }
+  },
+  getBookingById: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const result = await bookingModel.getBookingById(id);
+
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(
+        response,
+        200,
+        "Success get data !",
+        result
+      );
     } catch (error) {
       return helperWrapper.response(response, 400, "Bad Request", null);
     }

@@ -1,50 +1,40 @@
-# Beginer Backend
+<h1 align="center">ExpressJS - #Tickie RESTfull API</h1>
 
-## Collection Postman & Database
+#background_projek. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
-- Collection Postman [[here](https://documenter.getpostman.com/view/20144301/UVsSN3i8)]
-- Database [[here](https://github.com/FazztrackWebClass/BeginerBackend/blob/main/tickitz.sql)]
+## Built With
 
-## References
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-orange.svg?style=rounded-square)](https://expressjs.com/en/starter/installing.html)
+[![Node.js](https://img.shields.io/badge/Node.js-v.12.13-green.svg?style=rounded-square)](https://nodejs.org/)
 
-- Add Eslint Pretitier & Air Bnb [[here](https://dev.to/saurabhggc/add-eslint-prettier-and-airbnb-to-your-project-3mo8)]
-- SQL Injection in Node.js [[here](https://www.veracode.com/blog/secure-development/how-prevent-sql-injection-nodejs)]
-- Multiple Statement SQL [[here](https://stackoverflow.com/questions/23266854/node-mysql-multiple-statements-in-one-query)]
+## Requirements
 
-## Installation
+1. <a href="https://nodejs.org/en/download/">Node Js</a>
+2. Node_modules
+3. <a href="https://www.getpostman.com/">Postman</a>
+4. Web Server (ex. localhost)
 
-- `npm i express body-parser cors morgan mysql2 helmet xss-clean compression`
-- `npm i nodemon -D`
-- `npx eslint --init`
-- `npm i eslint prettier eslint-config-prettier eslint-plugin-prettier -D`
+## How to run the app ?
 
-## Extensions
+1. Open app's directory in CMD or Terminal
+2. Type `npm install`
+3. Make new file a called **.env**, set up first [here](#set-up-env-file)
+4. Turn on Web Server and MySQL can using Third-party tool like xampp, etc.
+5. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
+6. Open Postman desktop application or Chrome web app extension that has installed before
+7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
+8. You can see all the end point [here](https://documenter.getpostman.com/view/9852901/TzJoEfvL)
 
-- `Eslint` - Dirk Baeumer
-- `Path Intellisense` - Christian Kohler
-- `Prettier` - Prettier
+## Set up .env file
 
-## Package
+Open .env file on your favorite code editor, and copy paste this code below :
 
-- `express` [[here](https://www.npmjs.com/package/express)]
-- `body-parser` [[here](https://www.npmjs.com/package/body-parser)]
-- `cors` [[here](https://www.npmjs.com/package/cors)]
-- `morgan` [[here](https://www.npmjs.com/package/morgan)]
-- `mysql2` [[here](https://www.npmjs.com/package/mysql2)]
-- `helmet` [[here](https://www.npmjs.com/package/helmet)]
-- `xss-clean` [[here](https://www.npmjs.com/package/xss-clean)]
-- `compression` [[here](https://www.npmjs.com/package/compression)]
-- `nodemon` [[here](https://www.npmjs.com/package/nodemon)]
+```
+HOST=localhost // Database host
+USER="root"
+PORT="3001"
+```
 
-## Modularisasi
+## License
 
-- Public = untuk menyimpan file upload / file yang nntinya bsa diakses secara public oleh user
-- Src = untuk menyimpan code dari project backend yang dibuat
-  - index.js = file root untuk mengkonfigurasi beberapa library/framework untuk nantinya digunakan di dalam project
-  - Config = untuk menyimpan konfigurasi
-  - Helpers = untuk menyimpan suatu fungsi yang bsa digunakan di file berbeda
-  - Routes = untuk menampung semua path route yang ada di dalam module / sebagai route navigation
-  - Modules = untuk mengelompokkan suatu fitur di dalam request
-    - Routes = menyimpan path dari tiap request / method
-    - Controller = Logic / menyimpan data hasil request / mengeluarkan response
-    - Model = database
+© [Luthfi Thufail Asiddiqi](https://github.com/luthfidiqi/)
