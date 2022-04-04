@@ -42,11 +42,15 @@ module.exports = {
   getBookingByUserId: (id) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * 
+        `SELECT booking.id, booking.userId, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking.statusPayment, bookingSeat.seat, booking.statusUsed, schedule.premiere, user.firstName
         FROM booking 
-        INNER JOIN user
+        INNER JOIN bookingSeat
+        ON booking.id = bookingSeat.bookingId
+        JOIN schedule
+        ON booking.scheduleId = schedule.id
+        JOIN user
         ON booking.userId = user.id
-        WHERE user.id = ?`,
+        WHERE booking.id = ?`,
         id,
         (error, result) => {
           if (!error) {
@@ -57,10 +61,16 @@ module.exports = {
         }
       );
     }),
-  getBookingById: (id) =>
+  getBookingByBookingId: (id) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM booking WHERE id = ?",
+      const query = connection.query(
+        `SELECT booking.id, booking.userId, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking.statusPayment, bookingSeat.seat, booking.statusUsed, schedule.premiere
+        FROM bookingSeat
+        INNER JOIN booking
+        ON bookingSeat.bookingId = booking.id
+        JOIN schedule
+        ON booking.scheduleId = schedule.id
+        WHERE booking.id = ?`,
         id,
         (error, result) => {
           if (!error) {
@@ -70,5 +80,6 @@ module.exports = {
           }
         }
       );
+      console.log(query.sql);
     }),
 };

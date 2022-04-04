@@ -73,10 +73,10 @@ module.exports = {
       return helperWrapper.response(response, 400, "Bad Request", null);
     }
   },
-  getBookingById: async (request, response) => {
+  getBookingByBookingId: async (request, response) => {
     try {
       const { id } = request.params;
-      const result = await bookingModel.getBookingById(id);
+      const result = await bookingModel.getBookingByBookingId(id);
 
       if (result.length <= 0) {
         return helperWrapper.response(
