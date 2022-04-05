@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const helperWrapper = require("../../helpers/wrapper");
 const authModel = require("./authModel");
+const sendMail = require("../../helpers/email");
+require("dotenv").config();
 
 module.exports = {
   register: async (request, response) => {
@@ -30,6 +32,17 @@ module.exports = {
       };
 
       const result = await authModel.register(setData);
+
+      const setDataEmail = {
+        to: email,
+        subject: "Verification Email",
+        data: {
+          firstName,
+          lastName,
+        },
+      };
+      await sendMail(setDataEmail);
+
       return helperWrapper.response(
         response,
         200,

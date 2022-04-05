@@ -97,4 +97,91 @@ module.exports = {
       return helperWrapper.response(response, 400, "Bad Request", null);
     }
   },
+  getSeat: async (request, response) => {
+    try {
+      const { scheduleId, dateBooking, timeBooking } = request.query;
+
+      const result = await bookingModel.getSeat(
+        scheduleId,
+        dateBooking,
+        timeBooking
+      );
+
+      return helperWrapper.response(
+        response,
+        200,
+        "Success get data !",
+        result
+      );
+    } catch (error) {
+      return helperWrapper.response(response, 400, "Bad Request", null);
+    }
+  },
+  getDashboard: async (request, response) => {
+    try {
+      let { scheduleId, movieId, location } = request.query;
+
+      if (!scheduleId) {
+        scheduleId = "";
+      }
+      if (!movieId) {
+        movieId = "";
+      }
+      if (!location) {
+        location = "";
+      }
+
+      const result = await bookingModel.getDashboard(
+        scheduleId,
+        movieId,
+        location
+      );
+
+      if (result.length < 1) {
+        return helperWrapper.response(response, 200, "Data not found", []);
+      }
+
+      const newResult = result.map((item) => {
+        const data = {
+          ...item,
+          month: item.month.slice(0, 3),
+        };
+
+        return data;
+      });
+
+      return helperWrapper.response(
+        response,
+        200,
+        "Success get data dashboard",
+        newResult
+      );
+    } catch (error) {
+      return helperWrapper.response(response, 400, "Bad Request", null);
+    }
+  },
+  updateStatusBooking: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const result = await bookingModel.updateStatusBooking(id);
+
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(
+        response,
+        200,
+        "Success get data !",
+        result
+      );
+    } catch (error) {
+      return helperWrapper.response(response, 400, "Bad Request", null);
+    }
+  },
 };
