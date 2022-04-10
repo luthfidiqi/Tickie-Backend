@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 const helperWrapper = require("../../helpers/wrapper");
 const authModel = require("./authModel");
+const { sendMail } = require("../../helpers/mail");
 const redis = require("../../config/redis");
 
 module.exports = {
@@ -12,18 +14,19 @@ module.exports = {
       // 1. encrypt password
       const hashPass = await bcrypt.hash(password, 10);
       // 2. Tambahkan proses kondisi untuk mengecek apakah email sudah terdaftar atau belum
-      const checkUser = await authModel.getUserByEmail(email);
+      // const checkUser = await authModel.getUserByEmail(email);
 
-      if (checkUser.length >= 1) {
-        return helperWrapper.response(
-          response,
-          404,
-          "Email has been registered",
-          null
-        );
-      }
+      // if (checkUser.length >= 1) {
+      //   return helperWrapper.response(
+      //     response,
+      //     404,
+      //     "Email has been registered",
+      //     null
+      //   );
+      // }
 
       const setData = {
+        id: uuidv4(),
         firstName,
         lastName,
         noTelp,
@@ -32,6 +35,15 @@ module.exports = {
       };
 
       const result = await authModel.register(setData);
+
+      const setSendEmail = {
+        to: email,
+        subject: "Email Verification !",
+        name: firstName,
+        template: "verificationEmail.html",
+        buttonUrl: "google.com",
+      };
+      await sendMail(setSendEmail);
 
       return helperWrapper.response(
         response,

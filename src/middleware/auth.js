@@ -1,6 +1,6 @@
-const req = require("express/lib/request");
 const jwt = require("jsonwebtoken");
 const helperWrapper = require("../helpers/wrapper");
+const redis = require("../config/redis");
 
 module.exports = {
   authentication: async (request, response, next) => {
@@ -22,7 +22,7 @@ module.exports = {
       );
     }
 
-    jwt.verify(token, "Secret", (error, result) => {
+    jwt.verify(token, "RAHASIA", (error, result) => {
       if (error) {
         return helperWrapper.response(response, 403, error.message, null);
       }
