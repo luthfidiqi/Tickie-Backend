@@ -35,6 +35,8 @@ USER="root"
 PORT="3001"
 ```
 
+https://documenter.getpostman.com/view/20156725/UVyyrs7d
+
 ## License
 
 © [Luthfi Thufail Asiddiqi](https://github.com/luthfidiqi/)

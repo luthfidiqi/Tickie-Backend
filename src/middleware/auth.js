@@ -26,7 +26,6 @@ module.exports = {
       if (error) {
         return helperWrapper.response(response, 403, error.message, null);
       }
-      console.log(result);
 
       request.decodeToken = result;
       //   decodeToken = data user yang login

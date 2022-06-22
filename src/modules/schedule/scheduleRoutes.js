@@ -34,6 +34,7 @@ Router.delete(
   "/:id",
   middlewareAuth.authentication,
   middlewareAuth.isAdmin,
+  middlewareRedis.clearScheduleRedis,
   scheduleController.deleteSchedule
 );
 

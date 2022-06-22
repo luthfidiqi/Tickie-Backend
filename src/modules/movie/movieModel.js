@@ -14,23 +14,19 @@ module.exports = {
         }
       );
     }),
-  getAllMovie: (searchName, sort, limit, releaseDate, offset) =>
+  getAllMovie: (limit, offset, search, month, sort) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        `SELECT * FROM movie 
-        WHERE name LIKE '%${searchName}%' 
-        AND MONTH(releaseDate) = ${releaseDate} 
-        ORDER BY ${sort} LIMIT ? OFFSET ?`,
+      connection.query(
+        `SELECT * FROM movie WHERE name LIKE '%${search}%' AND MONTH(releaseDate) LIKE '%${month}%' ORDER BY ${sort} LIMIT ? OFFSET ?`,
         [limit, offset],
         (error, result) => {
           if (!error) {
             resolve(result);
           } else {
-            reject(new Error(error.sqlMessage));
+            reject(new Error(`SQL : ${err.sqlMessage}`));
           }
         }
       );
-      console.log(query.sql);
     }),
 
   getMovieById: (id) =>

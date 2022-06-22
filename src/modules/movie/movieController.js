@@ -4,51 +4,25 @@ const movieModel = require("./movieModel");
 const cloudinary = require("../../config/cloudinary");
 
 module.exports = {
-  getHello: async (request, response) => {
-    try {
-      //   response.status(200);
-      //   response.send("Hello World");
-      return helperWrapper.response(
-        response,
-        200,
-        "Success get data !",
-        "Hello World"
-      );
-    } catch (error) {
-      return helperWrapper.response(response, 400, "Bad Request", null);
-    }
-  },
   getAllMovie: async (request, response) => {
     try {
-      let { searchName, sort, page, releaseDate, limit } = request.query;
+      let { page, limit, search, month, sort } = request.query;
 
-      if (!page) {
+      page = Number(page) || 1;
+      limit = Number(limit) || 10;
+      search = search || "";
+      sort = sort || "id ASC";
+      month = month || "";
+
+      let offset = page * limit - limit;
+      const totalData = await movieModel.getCountMovie(search);
+      const totalPage = Math.ceil(totalData / limit);
+
+      if (totalPage < page) {
+        offset = 0;
         page = 1;
       }
 
-      if (!limit) {
-        limit = 10;
-      }
-
-      if (!searchName) {
-        searchName = "";
-      }
-
-      if (!sort) {
-        sort = "id ASC";
-      }
-
-      if (!releaseDate) {
-        releaseDate = "";
-      }
-
-      // searchName = String(searchName);
-      // sort = String(sort);
-      page = Number(page); // 2
-      limit = Number(limit); // 3
-      const offset = page * limit - limit; // 2 * 3 - 3 = 3
-      const totalData = await movieModel.getCountMovie();
-      const totalPage = Math.ceil(totalData / limit);
       const pageInfo = {
         page,
         totalPage,
@@ -57,11 +31,11 @@ module.exports = {
       };
 
       const result = await movieModel.getAllMovie(
-        searchName,
-        sort,
         limit,
-        releaseDate,
-        offset
+        offset,
+        search,
+        month,
+        sort
       );
 
       redis.setEx(
@@ -95,31 +69,27 @@ module.exports = {
         );
       }
 
-      // Proses menyimpan data ke redis
+      // PROSES UNTUK MENYIMPAN DATA KE DALAM REDIS
       redis.setEx(`getMovie:${id}`, 3600, JSON.stringify(result));
 
       return helperWrapper.response(
         response,
         200,
-        "Success get data !",
+        "Success get data by id !",
         result
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, "Bad Request", null);
+      return helperWrapper.response(response, 400, `Bad Request (${error.message})`, null);
     }
   },
   createMovie: async (request, response) => {
     try {
-      console.log(
-        `${request.file.filename}.${request.file.mimetype.split("/")[1]}`
-      );
-      // console.log(request.file);
       const {
         name,
         category,
-        director,
-        casts,
         releaseDate,
+        casts,
+        director,
         duration,
         synopsis,
       } = request.body;
@@ -127,12 +97,12 @@ module.exports = {
       const setData = {
         name,
         category,
-        image: request.file ? request.file.filename : "",
-        director,
-        casts,
         releaseDate,
+        casts,
+        director,
         duration,
         synopsis,
+        image: request.file ? request.file.filename : "",
       };
 
       const result = await movieModel.createMovie(setData);
@@ -144,7 +114,7 @@ module.exports = {
         result
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, "Bad Request", null);
+      return helperWrapper.response(response, 400, `Bad Request (${error.message})`, null);
     }
   },
   updateMovie: async (request, response) => {
@@ -197,6 +167,10 @@ module.exports = {
       }
 
       const result = await movieModel.updateMovie(id, setData);
+
+      cloudinary.uploader.destroy(checkId[0].image, (result) => {
+        console.log(result);
+      });
 
       return helperWrapper.response(
         response,

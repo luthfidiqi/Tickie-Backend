@@ -95,6 +95,11 @@ module.exports = {
 
       let result;
       result = await userModel.updateAvatar(id, setData);
+
+      cloudinary.uploader.destroy(checkId[0].image, (result) => {
+        console.log(result);
+      });
+
       return helperWrapper.response(
         response,
         200,

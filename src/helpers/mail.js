@@ -6,8 +6,8 @@ const mustache = require("mustache");
 // Implement ENV
 require("dotenv").config();
 
-const clientId = process.env.MAIL_MAIL_CLIENT_ID;
-const clientSecret = process.env.MAIL_MAIL_CLIENT_SECRET;
+const clientId = process.env.MAIL_CLIENT_ID;
+const clientSecret = process.env.MAIL_CLIENT_SECRET;
 const refreshToken = process.env.MAIL_REFRESH_TOKEN;
 
 const { OAuth2 } = google.auth;

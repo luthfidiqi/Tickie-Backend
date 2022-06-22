@@ -14,16 +14,16 @@ module.exports = {
       // 1. encrypt password
       const hashPass = await bcrypt.hash(password, 10);
       // 2. Tambahkan proses kondisi untuk mengecek apakah email sudah terdaftar atau belum
-      // const checkUser = await authModel.getUserByEmail(email);
+      const checkUser = await authModel.getUserByEmail(email);
 
-      // if (checkUser.length >= 1) {
-      //   return helperWrapper.response(
-      //     response,
-      //     404,
-      //     "Email has been registered",
-      //     null
-      //   );
-      // }
+      if (checkUser.length >= 1) {
+        return helperWrapper.response(
+          response,
+          404,
+          "Email has been registered",
+          null
+        );
+      }
 
       const setData = {
         id: uuidv4(),
@@ -52,6 +52,7 @@ module.exports = {
         result
       );
     } catch (error) {
+      console.log(error);
       return helperWrapper.response(response, 400, "Bad Request", null);
     }
   },
@@ -72,11 +73,6 @@ module.exports = {
           null
         );
       }
-
-      // 2. jika password ketika di cocokkan salah
-      // if (password !== checkUser[0].password) {
-      //   return helperWrapper.response(response, 400, "Wrong password", null);
-      // }
 
       if ((await bcrypt.compare(password, checkUser[0].password)) == false) {
         return helperWrapper.response(response, 400, "Wrong password", null);

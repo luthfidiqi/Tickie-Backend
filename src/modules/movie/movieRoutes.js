@@ -38,6 +38,7 @@ Router.delete(
   "/:id",
   middlewareAuth.authentication,
   middlewareAuth.isAdmin,
+  middlewareRedis.clearMovieRedis,
   movieController.deleteMovie
 ); // authentication, isAdmin
 
