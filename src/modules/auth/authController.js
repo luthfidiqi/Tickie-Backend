@@ -43,7 +43,11 @@ module.exports = {
         template: "verificationEmail.html",
         buttonUrl: "google.com",
       };
+      
       await sendMail(setSendEmail);
+
+      // const resultSendMail = await sendMail();
+      // console.log(resultSendMail);
 
       return helperWrapper.response(
         response,

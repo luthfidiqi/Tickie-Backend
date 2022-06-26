@@ -18,6 +18,7 @@ OAuth2Client.setCredentials({
 
 module.exports = {
   sendMail: (data) =>
+  // sendMail: () =>
     new Promise((resolve, reject) => {
       const accessToken = OAuth2Client.getAccessToken;
 
@@ -33,11 +34,23 @@ module.exports = {
         },
       });
 
-      const fileTemplate = fs.readFileSync(
+      // const fileTemplate = fs.readFileSync(
+      //   `src/templates/email/${data.template}`,
+      //   "utf8"
+      // );
+      //   console.log(fileTemplate);
+
+      // const mailOptions = {
+      //   from: '"Tickie" <lutasdev@gmail.com>', // sender address
+      //   to: data.to, // list of receivers
+      //   subject: data.subject, // Subject line
+      //   html: mustache.render(fileTemplate, { ...data }),
+      // };
+
+       const fileTemplate = fs.readFileSync(
         `src/templates/email/${data.template}`,
         "utf8"
       );
-      //   console.log(fileTemplate);
 
       const mailOptions = {
         from: '"Tickie" <lutasdev@gmail.com>', // sender address
