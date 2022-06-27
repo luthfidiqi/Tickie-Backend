@@ -64,12 +64,14 @@ module.exports = {
   getBookingByBookingId: (id) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        `SELECT booking.id, booking.userId, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking.statusPayment, bookingSeat.seat, booking.statusUsed, schedule.premiere
-        FROM bookingSeat
-        INNER JOIN booking
-        ON bookingSeat.bookingId = booking.id
+        `SELECT booking.id, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking. statusPayment, booking.statusUsed, bookingSeat.seat, bookingSeat.createdAt, bookingSeat.updatedAt, movie.name, movie.category
+        FROM booking
+        JOIN bookingSeat
+        ON booking.id = bookingSeat.bookingId
         JOIN schedule
         ON booking.scheduleId = schedule.id
+        JOIN movie
+        ON schedule.movieId = movie.id
         WHERE booking.id = ?`,
         id,
         (error, result) => {
@@ -86,12 +88,12 @@ module.exports = {
     new Promise((resolve, reject) => {
       const query = connection.query(
         `SELECT bookingSeat.id, bookingSeat.seat 
-        FROM booking 
-        INNER JOIN bookingSeat
-        ON booking.id = bookingSeat.bookingId
+        FROM bookingSeat 
+        JOIN booking
+        ON bookingSeat.bookingId = booking.id 
         WHERE booking.scheduleId = '${scheduleId}' 
-        AND booking.dateBooking = '${dateBooking}' 
-        AND booking.timeBooking = '${timeBooking}'`,
+        OR booking.dateBooking = '${dateBooking}' 
+        OR booking.timeBooking = '${timeBooking}'`,
         [scheduleId, dateBooking, timeBooking],
         (error, result) => {
           if (!error) {

@@ -4,7 +4,7 @@ const scheduleModel = require("./scheduleModel");
 module.exports = {
   getAllSchedule: async (request, response) => {
     try {
-      let { searchLocation, sort, page, limit } = request.query;
+      let { searchLocation, sort, limit, startDate, page } = request.query;
 
       if (!page) {
         page = 1;
@@ -38,6 +38,7 @@ module.exports = {
         searchLocation,
         sort,
         limit,
+        startDate,
         offset
       );
 
@@ -49,7 +50,7 @@ module.exports = {
         pageInfo
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, "Bad Request", null);
+      return helperWrapper.response(response, 400, `${error}`, null);
     }
   },
   getScheduleById: async (request, response) => {

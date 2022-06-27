@@ -14,16 +14,30 @@ module.exports = {
         }
       );
     }),
-  getAllSchedule: (searchLocation, sort, limit, offset) =>
+  getAllSchedule: (searchLocation, sort, limit, startDate, offset) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        `SELECT * 
-        FROM schedule 
-        INNER JOIN movie
-        ON schedule.movieId = movie.id
-        WHERE schedule.location 
-        LIKE "%${searchLocation}%" 
-        ORDER BY schedule.${sort} 
+      let query = `SELECT * FROM schedule LEFT JOIN movie ON schedule.movieId = movie.id`;
+
+      if (searchLocation) {
+        query = `${query} WHERE 
+          schedule.location 
+          LIKE "%${searchLocation}%"`;
+      }
+
+      if (startDate) {
+        if (searchLocation) {
+          query = `${query} AND 
+            DATE(schedule.dateStart) LIKE '${startDate}'`;
+          // schedule.dateStart >= '${startDate}' AND schedule.dateEnd <= '${endDate}'`;
+        } else {
+          query = `${query} WHERE
+            DATE(schedule.dateStart) LIKE '${startDate}'`;
+          // schedule.dateStart >= '${startDate}' AND schedule.dateEnd <= '${endDate}'`;
+        }
+      }
+
+      connection.query(
+        `${query} ORDER BY schedule.${sort} 
         LIMIT ? OFFSET ?`,
         [limit, offset],
         (error, result) => {

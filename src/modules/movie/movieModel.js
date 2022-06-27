@@ -17,13 +17,13 @@ module.exports = {
   getAllMovie: (limit, offset, search, month, sort) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM movie WHERE name LIKE '%${search}%' AND MONTH(releaseDate) LIKE '%${month}%' ORDER BY ${sort} LIMIT ? OFFSET ?`,
-        [limit, offset],
+        `SELECT * FROM movie WHERE name LIKE '%${search}%' AND MONTH(releaseDate) LIKE '%${month}%' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`,
+        // [limit, offset],
         (error, result) => {
           if (!error) {
             resolve(result);
           } else {
-            reject(new Error(`SQL : ${err.sqlMessage}`));
+            reject(new Error(`SQL : ${error.sqlMessage}`));
           }
         }
       );

@@ -79,7 +79,12 @@ module.exports = {
         result
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, `Bad Request (${error.message})`, null);
+      return helperWrapper.response(
+        response,
+        400,
+        `Bad Request (${error.message})`,
+        null
+      );
     }
   },
   createMovie: async (request, response) => {
@@ -114,7 +119,12 @@ module.exports = {
         result
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, `Bad Request (${error.message})`, null);
+      return helperWrapper.response(
+        response,
+        400,
+        `Bad Request (${error.message})`,
+        null
+      );
     }
   },
   updateMovie: async (request, response) => {
