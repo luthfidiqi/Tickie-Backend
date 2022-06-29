@@ -42,12 +42,14 @@ module.exports = {
   getBookingByUserId: (id) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT booking.id, booking.userId, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking.statusPayment, bookingSeat.seat, booking.statusUsed, schedule.premiere, user.firstName
+        `SELECT booking.id, booking.userId, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking.statusPayment, bookingSeat.seat, booking.statusUsed, schedule.premiere,schedule.price, movie.name, movie.category, user.firstName
         FROM booking 
         INNER JOIN bookingSeat
         ON booking.id = bookingSeat.bookingId
         JOIN schedule
         ON booking.scheduleId = schedule.id
+        JOIN movie
+        ON schedule.movieId = movie.id
         JOIN user
         ON booking.userId = user.id
         WHERE booking.userId = ?`,
@@ -64,7 +66,7 @@ module.exports = {
   getBookingByBookingId: (id) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        `SELECT booking.id, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking. statusPayment, booking.statusUsed, bookingSeat.seat, bookingSeat.createdAt, bookingSeat.updatedAt, movie.name, movie.category
+        `SELECT booking.id, booking.scheduleId, booking.dateBooking, booking.timeBooking, booking.totalTicket, booking.totalPayment, booking.paymentMethod, booking. statusPayment, booking.statusUsed, bookingSeat.seat, bookingSeat.createdAt, bookingSeat.updatedAt, schedule.price, movie.name, movie.category
         FROM booking
         JOIN bookingSeat
         ON booking.id = bookingSeat.bookingId
